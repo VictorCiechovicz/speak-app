@@ -1,5 +1,6 @@
 'use client'
 
+import axios from 'axios'
 import Button from '@/app/components/button/Button'
 import Input from '@/app/components/inputs/input'
 import { useState } from 'react'
@@ -7,13 +8,14 @@ import { useForm, FieldValues, SubmitHandler } from 'react-hook-form'
 import AuthSocialButton from './AuthSocialButton'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
-
+import { toast } from 'react-hot-toast'
+import { signIn } from 'next-auth/react'
 interface AuthFormProps {
   isLogin?: boolean
 }
 
 export default function AuthForm({ isLogin }: AuthFormProps) {
-  const [isLoading, setIsLoding] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const {
     register,
@@ -28,17 +30,33 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
-    setIsLoding(true)
+    setIsLoading(true)
     if (isLogin) {
-      //nextAuth
+      signIn('credentials', {
+        ...data,
+        redirect: false
+      })
+        .then(callback => {
+          if (callback?.error) {
+            toast.error('Invalid credentials')
+          }
+
+          if (callback?.ok && !callback?.error) {
+            toast.success('Logged In!')
+          }
+        })
+        .finally(() => setIsLoading(false))
     }
     if (!isLogin) {
-      //axios register
+      axios
+        .post('/api/register', data)
+        .catch(() => toast.error('Something went wrong!'))
+        .finally(() => setIsLoading(false))
     }
   }
 
   const socialAction = (action: string) => {
-    setIsLoding(true)
+    setIsLoading(true)
     //nextsocila login
   }
 
