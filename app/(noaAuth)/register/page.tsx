@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Logo from '../../../public/images/logo.png'
 import AuthForm from '@/app/(noaAuth)/components/AuthForm'
 
-export default function Login() {
+export default function Register() {
   return (
     <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-100 ">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -20,7 +20,7 @@ export default function Login() {
           Sign in to your account
         </h2>
       </div>
-      <AuthForm isLogin />
+      <AuthForm />
     </div>
   )
 }
