@@ -47,15 +47,28 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <form className="space-y-6 " onSubmit={handleSubmit(onSubmit)}>
           {!isLogin ? (
-            <Input id="name" label="Name" register={register} errors={errors} />
+            <Input
+              id="name"
+              label="Name"
+              register={register}
+              errors={errors}
+              disabled={isLoading}
+            />
           ) : null}
 
-          <Input id="email" label="Email" register={register} errors={errors} />
+          <Input
+            id="email"
+            label="Email"
+            register={register}
+            errors={errors}
+            disabled={isLoading}
+          />
           <Input
             id="password"
             label="Password"
             register={register}
             errors={errors}
+            disabled={isLoading}
           />
           <div>
             <Button disabled={isLoading} fullWidth type="submit">
@@ -87,7 +100,7 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
           </div>
         </div>
         <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
-          <div>{isLogin ? 'New to Massager?' : 'Already have an account?'}</div>
+          <div>{isLogin ? 'New to SpeakApp?' : 'Already have an account?'}</div>
           <div
             className="underline cursor-pointer"
             onClick={() => router.push(isLogin ? '/register' : '/login')}
