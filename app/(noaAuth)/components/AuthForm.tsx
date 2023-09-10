@@ -3,13 +3,13 @@
 import axios from 'axios'
 import Button from '@/app/components/button/Button'
 import Input from '@/app/components/inputs/input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form'
 import AuthSocialButton from './AuthSocialButton'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 interface AuthFormProps {
   isLogin?: boolean
 }
@@ -17,6 +17,8 @@ interface AuthFormProps {
 export default function AuthForm({ isLogin }: AuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const session = useSession()
+
   const {
     register,
     handleSubmit,
@@ -43,6 +45,7 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
 
           if (callback?.ok && !callback?.error) {
             toast.success('Logged In!')
+            router.push('/users')
           }
         })
         .finally(() => setIsLoading(false))
@@ -50,6 +53,7 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
     if (!isLogin) {
       axios
         .post('/api/register', data)
+        .then(() => signIn('credentials', data))
         .catch(() => toast.error('Something went wrong!'))
         .finally(() => setIsLoading(false))
     }
@@ -60,17 +64,24 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
     signIn(action, {
       redirect: false
     })
-    .then(callback => {
-      if (callback?.error) {
-        toast.error('Invalid credentials')
-      }
+      .then(callback => {
+        if (callback?.error) {
+          toast.error('Invalid credentials')
+        }
 
-      if (callback?.ok && !callback?.error) {
-        toast.success('Logged In!')
-      }
-    })
-    .finally(() => setIsLoading(false))
+        if (callback?.ok && !callback?.error) {
+          toast.success('Logged In!')
+          router.push('/users')
+        }
+      })
+      .finally(() => setIsLoading(false))
   }
+
+  useEffect(() => {
+    if (session?.status === 'authenticated') {
+      router.push('/users')
+    }
+  }, [session?.status, router])
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -133,7 +144,7 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
           <div>{isLogin ? 'New to SpeakApp?' : 'Already have an account?'}</div>
           <div
             className="underline cursor-pointer"
-            onClick={() => router.push(isLogin ? '/register' : '/login')}
+            onClick={() => router.push(isLogin ? '/register' : '/')}
           >
             {isLogin ? 'Create an account' : 'Login'}
           </div>
