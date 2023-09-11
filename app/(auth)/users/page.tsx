@@ -1,17 +1,10 @@
-'use client'
 
-import { signOut, useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import EmptyState from '@/app/components/emptyState/EmptyState'
 
 export default function Users() {
-
-
-
   return (
-    <div>
-      <button onClick={() => signOut()}>SignOut</button>
-      Hello User!
+    <div className="hidden lg:block lg:pl-80 h-full">
+      <EmptyState />
     </div>
   )
 }
