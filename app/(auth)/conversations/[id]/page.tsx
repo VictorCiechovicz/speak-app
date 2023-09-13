@@ -1,16 +1,32 @@
-'use client'
-
-import clsx from 'clsx'
-
-import useConversation from '@/app/hooks/useConversation'
+import getConversationById from '@/app/actions/getConversationById'
+import getMessages from '@/app/actions/getMessages'
 import EmptyState from '@/app/components/emptyState/EmptyState'
+import Header from './components/Header'
 
-export default function Home() {
-  const { isOpen } = useConversation()
+interface ConversationProps {
+  params: {
+    id: string
+  }
+}
 
+export default async function Conversation({ params }: ConversationProps) {
+  const conversation = await getConversationById(params.id)
+  const messages = await getMessages(params.id)
+
+  if (!conversation) {
+    return (
+      <div className="lg:pl-80 h-full">
+        <div className="h-full flex flex-col">
+          <EmptyState />
+        </div>
+      </div>
+    )
+  }
   return (
-    <div>
-      <EmptyState />
+    <div className="lg:pl-80 h-full">
+      <div className="h-full flex flex-col">
+        <Header conversation={conversation} />
+      </div>
     </div>
   )
 }
