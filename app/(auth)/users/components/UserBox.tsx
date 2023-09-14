@@ -18,7 +18,7 @@ export default function UserBox({ data }: UserBoxProps) {
     setIsLoading(true)
 
     axios
-      .post('/.api/conversations', {
+      .post('/api/conversations', {
         userId: data.id
       })
       .then(data => {
