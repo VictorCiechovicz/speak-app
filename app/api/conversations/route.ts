@@ -32,8 +32,8 @@ export async function POST(
           isGroup,
           users: {
             connect: [
-              ...members.map((member: { value: string }) => ({  
-                id: member.value 
+              ...members.map((member: { value: string }) => ({
+                id: member.value
               })),
               {
                 id: currentUser.id
@@ -46,12 +46,12 @@ export async function POST(
         }
       });
 
-       // Update all connections with new conversation
- /*      newConversation.users.forEach((user) => {
-        if (user.email) {
-          pusherServer.trigger(user.email, 'conversation:new', newConversation);
-        }
-      }); */
+      // Update all connections with new conversation
+      /*      newConversation.users.forEach((user) => {
+             if (user.email) {
+               pusherServer.trigger(user.email, 'conversation:new', newConversation);
+             }
+           }); */
 
       return NextResponse.json(newConversation);
     }
@@ -98,14 +98,15 @@ export async function POST(
     });
 
     // Update all connections with new conversation
-  /*   newConversation.users.map((user) => {
-      if (user.email) {
-        pusherServer.trigger(user.email, 'conversation:new', newConversation);
-      }
-    }); */
+    /*   newConversation.users.map((user) => {
+        if (user.email) {
+          pusherServer.trigger(user.email, 'conversation:new', newConversation);
+        }
+      }); */
 
     return NextResponse.json(newConversation)
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error, "Messages Error")
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

@@ -29,7 +29,10 @@ export default function Header({ conversation }: HeaderProps) {
           className="lg:hidden block text-sky-500 hover:text-sky-600 transition cursor-pointer "
           href="/conversation"
         >
-          <HiChevronDoubleDown size={32} />
+          <HiChevronDoubleDown
+            size={32}
+            className="text-sky-500 hover:text-sky-600 transition cursor-pointer "
+          />
         </Link>
         <Avatar user={otherUser} />
         <div className="flex flex-col">
