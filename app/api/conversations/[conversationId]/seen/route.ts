@@ -13,8 +13,6 @@ export async function POST(
   { params }: { params: IParams }
 ) {
 
-
-
   try {
     const currentUser = await getCurrentUser()
     const { conversationId } = params
