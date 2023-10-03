@@ -1,12 +1,9 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { FiAlertTriangle } from 'react-icons/fi'
+import React, {  useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
-import useConversation from '@/app/hooks/useConversation'
 import { toast } from 'react-hot-toast'
 import Button from '@/app/components/button/Button'
 import Modal from '@/app/components/modals/Modal'
@@ -32,8 +29,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
-  const { conversationId } = useConversation()
-
+  
   const {
     register,
     handleSubmit,
