@@ -10,8 +10,8 @@ import ActiveStatus from './components/status/ActiveStatus'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SpeakSnap',
-  description: 'SpenakSnap'
+  title: 'SpeakApp',
+  description: 'SpenakApp'
 }
 
 export default function RootLayout({
