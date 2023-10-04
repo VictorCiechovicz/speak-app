@@ -1,4 +1,5 @@
-![Developed Web by Victor Ciechovicz (1)](https://github.com/VictorCiechovicz/aluga-aqui/assets/106246945/58c5c47d-1749-4781-a869-5986eac8a6c9)
+![Developed Web by Victor Ciechovicz (2)](https://github.com/VictorCiechovicz/speak-app/assets/106246945/3e8dbb45-f271-428b-b855-92e97db95e58)
+
 
 # ****💬 Speak App****
 
