@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useConversation from '@/app/hooks/useConversation'
 import { useRouter } from 'next/navigation'
 import clsx from 'clsx'
@@ -9,6 +9,9 @@ import { FullConversationType } from '@/app/types'
 import ConversationBox from './ConversationBox'
 import GroupChatModal from './GroupChatModal'
 import { User } from '@prisma/client'
+import { useSession } from 'next-auth/react'
+import { pusherClient } from '@/app/libs/pusher'
+import { find } from 'lodash'
 
 interface ConversationProps {
   initialItems: FullConversationType[]
@@ -22,10 +25,60 @@ export default function ConversationList({
   const [items, setItems] = useState(initialItems)
 
   const [isOpenModal, setIsOpenModal] = useState(false)
-
+  const session = useSession()
   const router = useRouter()
-
   const { conversationId, isOpen } = useConversation()
+
+  const pusherKey = useMemo(() => {
+    return session?.data?.user?.email
+  }, [session?.data?.user?.email])
+
+  useEffect(() => {
+    if (!pusherKey) {
+      return
+    }
+
+    pusherClient.subscribe(pusherKey)
+
+    const updateHandler = (conversation: FullConversationType) => {
+      setItems(current =>
+        current.map(currentConversation => {
+          if (currentConversation.id === conversation.id) {
+            return {
+              ...currentConversation,
+              messages: conversation.messages
+            }
+          }
+
+          return currentConversation
+        })
+      )
+    }
+
+    const newHandler = (conversation: FullConversationType) => {
+      setItems(current => {
+        if (find(current, { id: conversation.id })) {
+          return current
+        }
+
+        return [conversation, ...current]
+      })
+    }
+
+    const removeHandler = (conversation: FullConversationType) => {
+      setItems(current => {
+        return [...current.filter(convo => convo.id !== conversation.id)]
+      })
+
+      if (conversationId === conversation.id) {
+        router.push('/conversations')
+      }
+    }
+
+    pusherClient.bind('conversation:update', updateHandler)
+    pusherClient.bind('conversation:new', newHandler)
+    pusherClient.bind('conversation:remove', removeHandler)
+  }, [pusherKey,conversationId, router])
 
   return (
     <>

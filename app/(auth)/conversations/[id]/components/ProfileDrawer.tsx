@@ -213,8 +213,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
-
-             
               </div>
             </div>
           </div>

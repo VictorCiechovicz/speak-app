@@ -8,6 +8,7 @@ import Avatar from '@/app/components/avatar/Avatar'
 import { useRouter } from 'next/navigation'
 import ProfileDrawer from './ProfileDrawer'
 import AvatarGroup from '@/app/components/avatar/AvatarGroup'
+import useActiveList from '@/app/hooks/useActiveList'
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -19,12 +20,16 @@ export default function Header({ conversation }: HeaderProps) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const otherUser = useOtherUser(conversation)
   const router = useRouter()
+
+  const { members } = useActiveList()
+  const isActive = members.indexOf(otherUser?.email!) !== -1
+
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
       return `${conversation.users.length} members`
     }
-    return 'Active'
-  }, [conversation])
+    return isActive ? 'Active' : 'Offline'
+  }, [conversation, isActive])
 
   return (
     <>
@@ -37,7 +42,7 @@ export default function Header({ conversation }: HeaderProps) {
         <div className="flex gap-3 items-center">
           <HiChevronLeft
             size={32}
-            className="text-sky-500 hover:text-sky-600 transition cursor-pointer "
+            className="text-orange-500 hover:text-orange-600 transition cursor-pointer "
             onClick={() => router.push('/conversation')}
           />
           {conversation.isGroup ? (
@@ -57,7 +62,7 @@ export default function Header({ conversation }: HeaderProps) {
         <HiEllipsisHorizontal
           size={32}
           onClick={() => setDrawerOpen(true)}
-          className="text-sky-500 hover:text-sky-600 transition cursor-pointer "
+          className="text-orange-500 hover:text-orange-600  transition cursor-pointer "
         />
       </div>
     </>

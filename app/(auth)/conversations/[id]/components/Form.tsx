@@ -39,7 +39,7 @@ export default function Form() {
         onUpload={handleUpload}
         uploadPreset="mdnafcea"
       >
-        <HiPhoto size={30} className="text-sky-500" />
+        <HiPhoto size={30} className="text-orange-500" />
       </CldUploadButton>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -54,7 +54,7 @@ export default function Form() {
         />
         <button
           type="submit"
-          className="rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition"
+          className="rounded-full p-2 bg-orange-500 cursor-pointer hover:bg-orange-600 transition"
         >
           <HiPaperAirplane size={18} className="text-white" />
         </button>
