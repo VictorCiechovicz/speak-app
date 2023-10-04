@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'SpeakApp',
-  description: 'SpenakApp'
+  description: 'SpeakApp'
 }
 
 export default function RootLayout({
